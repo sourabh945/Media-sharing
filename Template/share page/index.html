@@ -13,13 +13,23 @@
     <h2>Content</h2>
     <a class="folder" herf="hello"></a>
     <div class="content table">
-    {% for item in (content) %}
-    <div>
-        <a class="{{item[1]}}" href="{{item[0]}}">
-        {{item[0]}}
-        </a>
-    </div>
-    {%endfor%}
+    <table>
+        {% for item in (content) %}
+        <div>
+            {% if item[1] == "file" %}
+                <a class="{{item[1]}}" href="{{item[0]}}">
+                    <img src="{{url_for('static',filename='images/file.png')}}" alt="file">
+                    {{item[0]}}
+                </a>
+            {% elif item[1] == "folder" %}
+                <a class="file" href="{{item[0]}}">
+                    <img src="{{url_for('static',filename='images/folder.png')}}" alt="folder" >
+                    {{item[0]}}
+                </a>
+            {% endif %}
+        </div>
+        {%endfor%}
+    </table>
     </div>
 </body>
 </html>
