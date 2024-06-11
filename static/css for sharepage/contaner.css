@@ -26,7 +26,16 @@
     font-size: 160%;
     margin: 0 0 .6em;
     border-bottom: 1px solid ThreeDLightShadow;
+    font-weight: bold;
+  }
+
+  h2 {
+    font-size: 140%;
+    margin: 0 0 .6em;
+    border-bottom: 1px solid ThreeDLightShadow;
     font-weight: normal;
+    font-style: italic;
+    padding-bottom: 2%;
   }
   
   a {

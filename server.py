@@ -1,7 +1,17 @@
 import json
-from flask import Flask, render_template , request , redirect , url_for
+from flask import Flask, render_template , request , redirect 
 from modules.user import users_sessions
+from modules.listdir import ls
 import os
+import datetime 
+
+
+################## user defined parameters ###################
+
+re_login_time = 1 # time after the re-login is required to access the files in hours
+
+folder_path = "./share"
+
 
 ################## database exposer #######################
 
@@ -33,7 +43,7 @@ def admin():
         ipaddress = request.remote_addr
         if {username:password} in admin_login:
             user = users_sessions.user("admin",ipaddress)
-            return redirect('.share')
+            return folder(user,folder_path)
     return render_template("admin login/index.html")
 
 ### member login page ###
@@ -46,18 +56,18 @@ def login():
         ipaddress = request.remote_addr
         if {username:password} in login_data:
             user = users_sessions.user(username,ipaddress)
-            return share_content(user)
+            return (folder(user,folder_path))
+        else:
+            return 
     return render_template("login form/index.html")
 
-@app.route("/share")
-def share_content(user):
-    if user.session in users_sessions.user_id:
-        contents = os.listdir("./share")
-        return render_template("share page/index.html",content=contents,username=user.username,session=user.session)
-    else:
+### share page ###
+
+@app.route("/content")
+def folder(user,path):
+    if (datetime.datetime.now() - user.time_of_session).seconds > re_login_time*60*60: 
+        user.delete()
         return redirect("/login")
-
-
 
 
 if __name__ == "__main__":
